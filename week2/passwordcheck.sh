@@ -1,32 +1,46 @@
-echo "Enter the password:"
-read password
+#!/bin/bash
 
-len="${#password}"
+echo -e "\nEnter a Password: \n"
+read user
+
+len="${#user}"
 
 if test $len -ge 8; then
-    echo "$password" | grep -q [0-9]
+    echo "$user" | grep -q [0-9]
     if test $? -eq 0; then
-        echo "$password" | grep -q [A-Z]
+        echo "$user" | grep -q [A-Z]
         if test $? -eq 0; then
-            echo "$password" | grep -q [a-z]
+            echo "$user" | grep -q [a-z]
             if test $? -eq 0; then
-                echo "$password" | grep -q '[$@#%]'
+                echo "$user" | grep -q '[@#$%!&*]'
                 if test $? -eq 0; then
-                    echo "Strong password"
+                    echo -e "\nStrong password\n"
+                    echo "Password has been saved."
+                    echo "$user" > password.txt
                 else
-                    echo "Weak password: include special characters"
+                    echo -e "\nWeak password: include special characters (@#$%!&*)\n"
+                    echo "Try again or press CTRL+C to quit"
+                    ./passwordcheck.sh
                 fi
             else
-                echo "Weak password: include lower case characters"
+                echo -e "\nWeak password: include lower case characters\n"	
+                echo "Try again or press CTRL+C to quit"
+                ./passwordcheck.sh
             fi
         else
-            echo "Weak password: include capital characters"
+            echo -e "\nWeak password: include capital characters\n"
+            echo "Try again or press CTRL+C to quit"
+            ./passwordcheck.sh
         fi
     else
-        echo "Weak password: please include numbers"
+        echo -e "\nWeak password: please include numbers\n"
+   	echo "Try again or press CTRL+C to quit"
+        ./passwordcheck.sh
     fi
 else
-    echo "Weak password: length should be at least 8 characters"
+    echo -e "\nWeak password: length should be at least 8 characters\n" 
+    echo "Try again or press CTRL+C to quit"
+    ./passwordcheck.sh
 fi
 
 exit 0
